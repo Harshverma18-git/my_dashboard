@@ -1,83 +1,112 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
+
 import StatCard from "@/components/StatCard";
-import ChartCard from "@/components/ChartCard";
+import UserOrdersTable from "@/components/UserOrdersTable";
 import CategoryCard from "@/components/CategoryCard";
-import { LogOut } from "lucide-react";
+
+type DashboardCounts = {
+  total_revenue: number;
+  total_orders: number;
+  total_users: number;
+};
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.replace("/login");
-  };
 
+  const [loadingCounts, setLoadingCounts] = useState(true);
+  const [counts, setCounts] = useState<DashboardCounts | null>(null);
+
+  const [loadingTable, setLoadingTable] = useState(true);
+  const [rows, setRows] = useState<any[]>([]);
+
+  /* 🔌 FETCH STAT CARDS DATA */
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) {
-        router.replace("/login");
+    const fetchDashboardCounts = async () => {
+      const { data, error } = await supabase.rpc("get_dashboard_counts");
+
+      if (error) {
+        console.error("Dashboard count error:", error);
       } else {
-        setUser(data.user);
+        setCounts(data[0]);
       }
-    });
+
+      setLoadingCounts(false);
+    };
+
+    fetchDashboardCounts();
   }, []);
 
-  if (!user) return null;
+  /* 🔌 FETCH TABLE DATA */
+  useEffect(() => {
+    const fetchTableData = async () => {
+      const { data, error } = await supabase.rpc(
+        "get_user_workspace_orders"
+      );
+
+      if (error) {
+        console.error("Table data error:", error);
+      } else {
+        setRows(data);
+      }
+
+      setLoadingTable(false);
+    };
+
+    fetchTableData();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white flex">
-      {/* Sidebar */}
-      <aside className="w-64 bg-[#020617] p-6 hidden md:block">
-        <h2 className="text-xl font-bold mb-10">Side Bar</h2>
-
-        <nav className="space-y-4">
-          <p className="text-sm text-gray-400">Menu</p>
-          <button className="w-full text-left  text-white p-2 rounded-md font-semibold hover:bg-[#205992]">
-            Dashboard
-          </button>
-          <button className="w-full text-left  text-white p-2 rounded-md font-semibold hover:bg-[#205992]">
-            Analytics
-          </button>
-          <button className="w-full text-left  text-white p-2 rounded-md font-semibold hover:bg-[#205992]">
-            Settings
-          </button>
-        </nav>
-
-        <div className="absolute bottom-6 text-sm text-gray-400 bg-black p-2 rounded w-50">
-          {user.email}
-          <button onClick={handleLogout} className="flex items-center gap-1 text-red-400 hover:text-red-500 text-xs">
-          <LogOut size={14} /> Logout
-          </button>
-        </div>
-      </aside>
-
-      {/* Main Content */}
       <main className="flex-1 p-6">
         {/* Header */}
-        <div className="flex justify-between items-center mb-6 ">
+        <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-semibold">
             Welcome to your dashboard
           </h1>
+
           <input
             placeholder="Search"
-            className="bg-[#020617] border border-gray-700 rounded px-3 py-2 text-sm"
+            className="bg-[#020617] border border-gray-700 rounded px-3 py-2 text-sm outline-none"
           />
         </div>
 
-        {/* Stats Section */}
+        {/* ================= STATS ================= */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <StatCard title="Revenue" value="₹ 4725.05" />
-          <StatCard title="Orders" value="₹ 1282" />
-          <StatCard title="Users" value="₹ 1282" />
+          <StatCard
+            title="Revenue"
+            value={
+              loadingCounts
+                ? "Loading..."
+                : `₹ ${counts?.total_revenue.toFixed(2)}`
+            }
+          />
+
+          <StatCard
+            title="Orders"
+            value={loadingCounts ? "Loading..." : counts?.total_orders}
+          />
+
+          <StatCard
+            title="Users"
+            value={loadingCounts ? "Loading..." : counts?.total_users}
+          />
         </div>
 
-        {/* Bottom Section */}
-        <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-          <ChartCard />
+        {/* ================= TABLE (REPLACED DONUT) ================= */}
+        <div className="mb-6">
+          {loadingTable ? (
+            <p className="text-gray-400">Loading orders...</p>
+          ) : (
+            <UserOrdersTable rows={rows} />
+          )}
+        </div>
+
+        {/* ================= CATEGORY ================= */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <CategoryCard name="Category name" percent={45} />
           <CategoryCard name="Category name" percent={80} />
         </div>
