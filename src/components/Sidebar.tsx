@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "@/src/lib/supabaseClient";
 import { useRouter, usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   BarChart3,
   Settings,
   LogOut,
+  Cone,
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -86,6 +87,17 @@ export default function Sidebar() {
               className={getIconColor("/settings")}
             />
             Settings
+          </button>
+          {/* Settings */}
+          <button
+            className={getBtnClass("/rick-and-morty")}
+            onClick={() => router.push("/rick-and-morty")}
+          >
+            <Cone
+              size={18}
+              className={getIconColor("/rick-and-morty")}
+            />
+            Rick and Morty
           </button>
         </nav>
       </div>
