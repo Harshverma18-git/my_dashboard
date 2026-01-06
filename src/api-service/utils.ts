@@ -49,7 +49,11 @@ export const apiClient = {
     const response = await fetch(url, {
       method,
       headers: mergedHeaders,
-      body: data ? (isFormData ? (data as BodyInit) : JSON.stringify(data)) : undefined,
+      body: data
+        ? isFormData
+          ? (data as BodyInit)
+          : JSON.stringify(data)
+        : undefined,
     });
 
     const parsed = await parseResponse(response);
@@ -70,29 +74,29 @@ export const apiClient = {
   get: async (endpoint: string, headers: Record<string, string> = {}) =>
     apiClient.request({ endpoint, method: "GET", headers }),
 
-//   post: async (
-//     endpoint: string,
-//     data?: unknown,
-//     headers: Record<string, string> = {}
-//   ) => apiClient.request({ endpoint, method: "POST", data, headers }),
+  //   post: async (
+  //     endpoint: string,
+  //     data?: unknown,
+  //     headers: Record<string, string> = {}
+  //   ) => apiClient.request({ endpoint, method: "POST", data, headers }),
 
-//   put: async (
-//     endpoint: string,
-//     data?: unknown,
-//     headers: Record<string, string> = {}
-//   ) => apiClient.request({ endpoint, method: "PUT", data, headers }),
+  //   put: async (
+  //     endpoint: string,
+  //     data?: unknown,
+  //     headers: Record<string, string> = {}
+  //   ) => apiClient.request({ endpoint, method: "PUT", data, headers }),
 
-//   patch: async (
-//     endpoint: string,
-//     data?: unknown,
-//     headers: Record<string, string> = {}
-//   ) => apiClient.request({ endpoint, method: "PATCH", data, headers }),
+  //   patch: async (
+  //     endpoint: string,
+  //     data?: unknown,
+  //     headers: Record<string, string> = {}
+  //   ) => apiClient.request({ endpoint, method: "PATCH", data, headers }),
 
-//   delete: async (
-//     endpoint: string,
-//     data?: unknown,
-//     headers: Record<string, string> = {}
-//   ) => apiClient.request({ endpoint, method: "DELETE", data, headers }),
+  //   delete: async (
+  //     endpoint: string,
+  //     data?: unknown,
+  //     headers: Record<string, string> = {}
+  //   ) => apiClient.request({ endpoint, method: "DELETE", data, headers }),
 };
 
 export const QueryKeys = {

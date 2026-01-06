@@ -5,11 +5,11 @@ import { useQueries } from "@tanstack/react-query";
 import {
   useEpisodesQuery,
   useEpisodeCharactersQuery,
-} from "@/src/api-service/episode";
+} from "@/src/api-service/episodes";
 import {
   fetchCharacterByUrl,
   useCharactersQuery,
-} from "@/src/api-service/character";
+} from "@/src/api-service/characters";
 import { Character } from "@/src/types/characters";
 
 export default function RickAndMortyPage() {
@@ -39,7 +39,7 @@ export default function RickAndMortyPage() {
 
   const characterQueries = useQueries({
     queries:
-      characterUrls.map((url) => ({
+      characterUrls.map((url: string) => ({
         queryKey: ["character-url", url],
         queryFn: () => fetchCharacterByUrl(url),
         enabled: Boolean(url),
@@ -69,7 +69,9 @@ export default function RickAndMortyPage() {
   if (isEpisodesLoading) {
     return (
       <div className="flex h-full items-center justify-center">
-        <p className="text-lg font-semibold text-gray-600">Loading episodes...</p>
+        <p className="text-lg font-semibold text-gray-600">
+          Loading episodes...
+        </p>
       </div>
     );
   }
@@ -89,14 +91,14 @@ export default function RickAndMortyPage() {
       <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
           <h1 className="text-2xl font-bold text-gray-900">Rick and Morty</h1>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-white-600">
             Choose an episode to see the characters that appear in it.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <label
             htmlFor="episode-select"
-            className="text-sm font-medium text-gray-800"
+            className="text-sm font-medium text-white-800"
           >
             Episode
           </label>
@@ -116,15 +118,15 @@ export default function RickAndMortyPage() {
         </div>
       </header>
 
-      <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-          <h2 className="text-lg font-semibold text-gray-900">
+      <section className="rounded-xl border p-4 shadow-sm">
+        <div className="flex items-center justify-between pb-3">
+          <h2 className="text-lg font-semibold text-white">
             Characters in this episode
           </h2>
           {isEpisodeCharactersLoading || isCharactersLoading ? (
             <span className="text-sm text-indigo-600">Loading...</span>
           ) : (
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-white-600">
               {characters.length} character{characters.length === 1 ? "" : "s"}
             </span>
           )}
@@ -136,7 +138,9 @@ export default function RickAndMortyPage() {
           </div>
         ) : !characters.length ? (
           <div className="flex items-center justify-center py-10">
-            <p className="text-gray-600">No characters found for this episode.</p>
+            <p className="text-gray-600">
+              No characters found for this episode.
+            </p>
           </div>
         ) : (
           <div className="grid gap-4 pt-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -8,6 +8,7 @@ import {
   BarChart3,
   Settings,
   LogOut,
+  Play,
   Cone,
 } from "lucide-react";
 
@@ -58,10 +59,7 @@ export default function Sidebar() {
             className={getBtnClass("/dashboard")}
             onClick={() => router.push("/dashboard")}
           >
-            <LayoutDashboard
-              size={18}
-              className={getIconColor("/dashboard")}
-            />
+            <LayoutDashboard size={18} className={getIconColor("/dashboard")} />
             Dashboard
           </button>
 
@@ -70,11 +68,17 @@ export default function Sidebar() {
             className={getBtnClass("/analytics")}
             onClick={() => router.push("/analytics")}
           >
-            <BarChart3
-              size={18}
-              className={getIconColor("/analytics")}
-            />
+            <BarChart3 size={18} className={getIconColor("/analytics")} />
             Analytics
+          </button>
+
+          {/* Rick and Morty */}
+          <button
+            className={getBtnClass("/rick-and-morty")}
+            onClick={() => router.push("/rick-and-morty")}
+          >
+            <Play size={18} className={getIconColor("/rick-and-morty")} />
+            Rick And Morty
           </button>
 
           {/* Settings */}
@@ -82,10 +86,7 @@ export default function Sidebar() {
             className={getBtnClass("/settings")}
             onClick={() => router.push("/settings")}
           >
-            <Settings
-              size={18}
-              className={getIconColor("/settings")}
-            />
+            <Settings size={18} className={getIconColor("/settings")} />
             Settings
           </button>
           {/* Settings */}
@@ -93,10 +94,7 @@ export default function Sidebar() {
             className={getBtnClass("/rick-and-morty")}
             onClick={() => router.push("/rick-and-morty")}
           >
-            <Cone
-              size={18}
-              className={getIconColor("/rick-and-morty")}
-            />
+            <Cone size={18} className={getIconColor("/rick-and-morty")} />
             Rick and Morty
           </button>
         </nav>
