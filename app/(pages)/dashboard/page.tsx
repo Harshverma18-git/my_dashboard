@@ -107,8 +107,8 @@ export default function DashboardPage() {
 
         {/* ================= CATEGORY ================= */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <CategoryCard name="Category name" percent={45} />
-          <CategoryCard name="Category name" percent={80} />
+          <CategoryCard name="Categories" percent={45} />
+          <CategoryCard name="Orders" percent={80} />
         </div>
       </main>
     </div>
