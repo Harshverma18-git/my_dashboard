@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "@/src/lib/supabaseClient";
 
-import StatCard from "@/components/StatCard";
-import UserOrdersTable from "@/components/UserOrdersTable";
-import CategoryCard from "@/components/CategoryCard";
+import StatCard from "@/src/components/StatCard";
+import UserOrdersTable from "@/src/components/UserOrdersTable";
+import CategoryCard from "@/src/components/CategoryCard";
 
 type DashboardCounts = {
   total_revenue: number;

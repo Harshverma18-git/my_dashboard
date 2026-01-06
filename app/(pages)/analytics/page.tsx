@@ -1,8 +1,8 @@
 "use client";
 
-import StatCard from "@/components/StatCard";
-import ChartCard from "@/components/UserOrdersTable";
-import CategoryCard from "@/components/CategoryCard";
+import StatCard from "@/src/components/StatCard";
+import ChartCard from "@/src/components/UserOrdersTable";
+import CategoryCard from "@/src/components/CategoryCard";
 
 export default function AnalyticsPage() {
   return (
