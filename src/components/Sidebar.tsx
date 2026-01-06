@@ -89,14 +89,6 @@ export default function Sidebar() {
             <Settings size={18} className={getIconColor("/settings")} />
             Settings
           </button>
-          {/* Settings */}
-          <button
-            className={getBtnClass("/rick-and-morty")}
-            onClick={() => router.push("/rick-and-morty")}
-          >
-            <Cone size={18} className={getIconColor("/rick-and-morty")} />
-            Rick and Morty
-          </button>
         </nav>
       </div>
 
