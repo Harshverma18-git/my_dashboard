@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { supabase } from "@/src/lib/supabaseClient";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "../store/authStore";
 
 export function useLogin() {
   const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +18,7 @@ export function useLogin() {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -25,9 +27,14 @@ export function useLogin() {
 
     if (error) {
       alert(error.message);
-    } else {
-      router.push("/dashboard");
+      return;
     }
+
+    // ✅ SAVE USER IN ZUSTAND
+    setUser(data.user);
+
+    // ✅ REDIRECT
+    router.push("/dashboard");
   };
 
   return {
